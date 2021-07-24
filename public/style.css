@@ -57,6 +57,16 @@ button {
     cursor: pointer;
 }
 
+p {
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 32px;
+    width: 100%;
+    display: inline;
+}
+
 button::-moz-focus-inner {
     padding: 0;
     border: 0;

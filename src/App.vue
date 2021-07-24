@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- Добавляю Loader, если loading = true -->
     <div class="loader" v-if="loading">
       <div></div>
       <div></div>
@@ -128,7 +129,23 @@ export default {
     };
   },
   name: "App",
+  mounted() {
+    //Забираю содержимое из предоставленного API
+    this.loading = true;
+    axios
+      .get(this.url)
+      .then((response) => {
+        this.info = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        this.errored = true;
+      })
+      .finally(() => (this.loading = false));
+  },
   methods: {
+    //Метод для переключения языка
+
     switchLang: function () {
       if (this.lang != "en") {
         this.lang = "en";
@@ -160,6 +177,7 @@ export default {
           .finally(() => (this.loading = false));
       }
     },
+    // Метод который показывает\скрывает новости
     showNews: function () {
       if (!this.show) {
         this.show = true;
@@ -168,23 +186,11 @@ export default {
       }
     },
   },
-  beforeMount() {
-    this.loading = true;
-    axios
-      .get(this.url)
-      .then((response) => {
-        this.info = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-        this.errored = true;
-      })
-      .finally(() => (this.loading = false));
-  },
 };
 </script>
 
 <style>
+/* header */
 .header,
 .footer {
   display: flex;
@@ -197,14 +203,6 @@ export default {
   flex-wrap: wrap;
 }
 
-.footer {
-  margin-top: 50px;
-  background: black;
-  padding: 20px;
-  align-items: center;
-}
-
-
 .header a {
   margin: 10px;
   display: block;
@@ -213,6 +211,8 @@ export default {
 .header a:hover {
   color: skyblue;
 }
+
+/* about-us */
 
 .about-us {
   width: 100%;
@@ -252,15 +252,7 @@ export default {
 .short-desc {
   padding-top: 20px;
 }
-h1 {
-  font-size: 32px;
-  width: 100%;
-  display: inline;
-}
 
-p {
-  font-size: 16px;
-}
 .blocks,
 .partners {
   display: flex;
@@ -269,6 +261,8 @@ p {
   flex-wrap: wrap;
   padding: 20px 0;
 }
+
+/* mission  */
 
 .mission {
   background: url(/img/mission.png);
@@ -346,6 +340,8 @@ p {
   padding-top: 50px;
 }
 
+/* products  */
+
 .products {
   display: flex;
   justify-content: center;
@@ -380,6 +376,8 @@ p {
   color: black;
 }
 
+/* news  */
+
 .news {
   background: url(/img/news.jpg);
   background-repeat: no-repeat;
@@ -396,6 +394,16 @@ p {
 }
 .new {
   margin: 30px;
+}
+
+/* footer  */
+
+.footer {
+  margin-top: 50px;
+  background: black;
+  padding: 20px;
+  align-items: center;
+  margin-bottom: 0px;
 }
 
 .footer img {
@@ -449,7 +457,8 @@ p {
   .about-us-h1 {
     font-size: 2em;
   }
-  .about-us-desc, .new {
+  .about-us-desc,
+  .new {
     padding: 10px;
     margin: 10px;
   }
